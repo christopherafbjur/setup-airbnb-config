@@ -22,6 +22,7 @@ function parseArgsIntoOptions(rawArgs) {
     skipPrompts: args["--yes"] || false,
     test: args["--test"] || false,
     git: args["--git"] || false,
+    runInstall: args["--install"] || false,
     template: args._[0],
   };
 }
@@ -75,5 +76,6 @@ async function promptForMissingOptions(options) {
 export async function cli(args) {
   let options = parseArgsIntoOptions(args);
   options = await promptForMissingOptions(options);
+
   await createProject(options);
 }
