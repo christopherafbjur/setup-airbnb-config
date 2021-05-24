@@ -7,8 +7,10 @@ function parseArgsIntoOptions(rawArgs) {
     {
       "--test": Boolean,
       "--yes": Boolean,
+      "--git": Boolean,
       "-t": "--test",
       "-y": "--yes",
+      "-g": "--git",
     },
     {
       argv: rawArgs.slice(2),
@@ -17,6 +19,7 @@ function parseArgsIntoOptions(rawArgs) {
   return {
     skipPrompts: args["--yes"] || false,
     test: args["--test"] || false,
+    git: args["--git"] || false,
     template: args._[0],
   };
 }
@@ -41,11 +44,20 @@ async function promptForMissingOptions(options) {
     });
   }
 
-  if (!options.git) {
+  if (!options.test) {
     questions.push({
       type: "confirm",
       name: "test",
       message: "This is a test",
+      default: false,
+    });
+  }
+
+  if (!options.git) {
+    questions.push({
+      type: "confirm",
+      name: "git",
+      message: "Initialize git repo?",
       default: false,
     });
   }
