@@ -7,10 +7,8 @@ function parseArgsIntoOptions(rawArgs) {
     {
       "--yes": Boolean,
       "--git": Boolean,
-      "--install": Boolean,
       "-y": "--yes",
       "-g": "--git",
-      "-i": "--install",
     },
     {
       argv: rawArgs.slice(2),
@@ -19,7 +17,6 @@ function parseArgsIntoOptions(rawArgs) {
   return {
     skipPrompts: args["--yes"] || false,
     git: args["--git"] || false,
-    runInstall: args["--install"] || false,
     template: args._[0],
   };
 }
