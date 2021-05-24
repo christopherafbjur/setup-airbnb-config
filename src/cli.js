@@ -8,9 +8,11 @@ function parseArgsIntoOptions(rawArgs) {
       "--test": Boolean,
       "--yes": Boolean,
       "--git": Boolean,
+      "--install": Boolean,
       "-t": "--test",
       "-y": "--yes",
       "-g": "--git",
+      "-i": "--install",
     },
     {
       argv: rawArgs.slice(2),
