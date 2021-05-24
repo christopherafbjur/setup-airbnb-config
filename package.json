@@ -24,6 +24,7 @@
   "dependencies": {
     "arg": "^5.0.0",
     "esm": "^3.2.25",
-    "inquirer": "^8.1.0"
+    "inquirer": "^8.1.0",
+    "ncp": "^2.0.0"
   }
 }
