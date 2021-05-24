@@ -53,10 +53,16 @@ export async function createProject(options) {
         projectInstall({
           cwd: options.targetDirectory,
         }),
-      skip: () =>
-        !options.runInstall
-          ? "Pass --install to automatically install dependencies"
-          : undefined,
+    },
+    {
+      title: "Install eslint config (JS)",
+      task: () => installEslintConfigJs(options),
+      enabled: () => options.template.toLowerCase() === "javascript",
+    },
+    {
+      title: "Install eslint config (React)",
+      task: () => installEslintConfigReact(options),
+      enabled: () => options.template.toLowerCase() === "react",
     },
   ]);
 
@@ -71,6 +77,33 @@ async function initializeGit(options) {
   });
   if (result.failed) {
     return Promise.reject(new Error("Failed to initialize git repo"));
+  }
+  return;
+}
+
+async function installEslintConfigJs(options) {
+  const result = await execa(
+    "npx",
+    ["install-peerdeps", "--dev", "eslint-config-airbnb-base"],
+    {
+      cwd: options.targetDirectory,
+    }
+  );
+  if (result.failed) {
+    return Promise.reject(new Error("Failed to install eslint config"));
+  }
+  return;
+}
+async function installEslintConfigReact(options) {
+  const result = await execa(
+    "npx",
+    ["install-peerdeps", "--dev", "eslint-config-airbnb"],
+    {
+      cwd: options.targetDirectory,
+    }
+  );
+  if (result.failed) {
+    return Promise.reject(new Error("Failed to install eslint config"));
   }
   return;
 }
