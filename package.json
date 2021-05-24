@@ -1,14 +1,21 @@
 {
-  "name": "linting_cli",
+  "name": "@christopherafbjur/create-project",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "A CLI to bootstrap projects with Prettier and Eslint.",
+  "main": "src/index.js",
+  "bin": {
+    "@christopherafbjur/create-project": "bin/create-project",
+   "create-project": "bin/create-project"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": ["cli", "create-project", "prettier", "eslint"],
+  "author": "Christopher Af Bjur",
+  "license": "MIT",
   "dependencies": {
     "esm": "^3.2.25"
   }
