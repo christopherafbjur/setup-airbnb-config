@@ -43,11 +43,6 @@ export async function createProject(options) {
       task: () => copyTemplateFiles(options),
     },
     {
-      title: "Run test",
-      task: () => runTest(options),
-      enabled: () => options.test,
-    },
-    {
       title: "Initialize git",
       task: () => initializeGit(options),
       enabled: () => options.git,
@@ -77,10 +72,5 @@ async function initializeGit(options) {
   if (result.failed) {
     return Promise.reject(new Error("Failed to initialize git repo"));
   }
-  return;
-}
-
-function runTest(options) {
-  console.log('Running "test" function');
   return;
 }

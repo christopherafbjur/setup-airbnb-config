@@ -5,11 +5,9 @@ import { createProject } from "./main";
 function parseArgsIntoOptions(rawArgs) {
   const args = arg(
     {
-      "--test": Boolean,
       "--yes": Boolean,
       "--git": Boolean,
       "--install": Boolean,
-      "-t": "--test",
       "-y": "--yes",
       "-g": "--git",
       "-i": "--install",
@@ -20,7 +18,6 @@ function parseArgsIntoOptions(rawArgs) {
   );
   return {
     skipPrompts: args["--yes"] || false,
-    test: args["--test"] || false,
     git: args["--git"] || false,
     runInstall: args["--install"] || false,
     template: args._[0],
@@ -44,15 +41,6 @@ async function promptForMissingOptions(options) {
       message: "Please choose which project template to use",
       choices: ["JavaScript", "React"],
       default: defaultTemplate,
-    });
-  }
-
-  if (!options.test) {
-    questions.push({
-      type: "confirm",
-      name: "test",
-      message: "This is a test",
-      default: false,
     });
   }
 
