@@ -7,7 +7,7 @@ async function copyTemplateFiles(options) {
   return copy(options.templateDirectory, options.targetDirectory, {
     clobber: false,
     filter: (path) => {
-      const regex = /.*(.prettierrc.json|.eslintrc.json)$/i;
+      const regex = /.*(.prettierrc.json|.eslintrc.json|.vscode)$/i;
       const skip = regex.test(path);
 
       if (skip) return false;
