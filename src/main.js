@@ -91,7 +91,7 @@ function getReactTasks(options) {
       title: "Install eslint/prettier deps",
       task: async () => {
         const dependencies = [
-          "eslintt@^7.27.0",
+          "eslint@^7.27.0",
           "prettier@^2.3.0",
           "eslint-plugin-prettier@^3.4.0",
           "eslint-config-prettier@^8.3.0",
@@ -150,7 +150,7 @@ function getVanillaJsTasks(options) {
       title: "Install eslint/prettier deps",
       task: async () => {
         const dependencies = [
-          "eslintt@^7.27.0",
+          "eslint@^7.27.0",
           "prettier@^2.3.0",
           "eslint-plugin-prettier@^3.4.0",
           "eslint-config-prettier@^8.3.0",
