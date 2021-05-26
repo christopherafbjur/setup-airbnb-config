@@ -5,7 +5,6 @@ import path from "path";
 import { promisify } from "util";
 import execa from "execa";
 import Listr from "listr";
-import { projectInstall } from "pkg-install";
 
 const access = promisify(fs.access);
 const copy = promisify(ncp);
@@ -44,42 +43,152 @@ export async function createProject(options) {
     process.exit(1);
   }
 
-  const tasks = new Listr([
+  const tasks = getTasks(options);
+
+  await tasks.run();
+  console.log("%s Project ready", chalk.green.bold("DONE"));
+  return true;
+}
+
+function getTasks(options) {
+  const template = options.template.toLowerCase();
+
+  if (template === "react") return getReactTasks(options);
+  return getVanillaJsTasks(options);
+}
+
+function getReactTasks(options) {
+  return new Listr([
+    {
+      title: "Create react app",
+      task: async () => {
+        const result = await execa(
+          "npx",
+          ["create-react-app@^4.0.3", ".", "--use-npm"],
+          {
+            cwd: options.targetDirectory,
+          }
+        );
+        if (result.failed) {
+          return Promise.reject(new Error("Failed to install react"));
+        }
+        return;
+      },
+    },
     {
       title: "Copy project files",
       task: () => copyTemplateFiles(options),
     },
     {
       title: "Configure user settings",
-      task: () => buildDynamicFiles(options),
+      task: () => {
+        /* buildPackageJson(options); */ //TODO decide how we should mod package.json since it's being created by create-react-app
+        buildEslintRcJson(options);
+        buildPrettierRcJson(options);
+      },
     },
     {
-      title: "Initialize git",
-      task: () => initializeGit(options),
-      enabled: () => options.git,
-    },
-    {
-      title: "Install dependencies",
-      task: () =>
-        projectInstall({
+      title: "Install eslint/prettier deps",
+      task: async () => {
+        const dependencies = [
+          "eslintt@^7.27.0",
+          "prettier@^2.3.0",
+          "eslint-plugin-prettier@^3.4.0",
+          "eslint-config-prettier@^8.3.0",
+          "eslint-plugin-node@^11.1.0",
+          "eslint-config-node@^4.1.0",
+        ];
+
+        const result = await execa("npm", ["i", "-D", ...dependencies], {
           cwd: options.targetDirectory,
-        }),
-    },
-    {
-      title: "Install eslint config (JS)",
-      task: () => installEslintConfigJs(options),
-      enabled: () => options.template.toLowerCase() === "javascript",
+        });
+        if (result.failed) {
+          return Promise.reject(new Error("Failed to install dependencies"));
+        }
+        return;
+      },
     },
     {
       title: "Install eslint config (React)",
-      task: () => installEslintConfigReact(options),
-      enabled: () => options.template.toLowerCase() === "react",
+      task: async () => {
+        const result = await execa(
+          "npx",
+          ["install-peerdeps", "--dev", "eslint-config-airbnb@^18.2.1"],
+          {
+            cwd: options.targetDirectory,
+          }
+        );
+        if (result.failed) {
+          return Promise.reject(new Error("Failed to install eslint config"));
+        }
+        return;
+      },
     },
+    /* {
+      title: "Initialize git",
+      task: () => initializeGit(options),
+      enabled: () => options.git,
+    }, */
   ]);
+}
 
-  await tasks.run();
-  console.log("%s Project ready", chalk.green.bold("DONE"));
-  return true;
+function getVanillaJsTasks(options) {
+  return new Listr([
+    {
+      title: "Copy project files",
+      task: () => copyTemplateFiles(options),
+    },
+    {
+      title: "Configure user settings",
+      task: () => {
+        buildPackageJson(options);
+        buildEslintRcJson(options);
+        buildPrettierRcJson(options);
+      },
+    },
+    {
+      title: "Install eslint/prettier deps",
+      task: async () => {
+        const dependencies = [
+          "eslintt@^7.27.0",
+          "prettier@^2.3.0",
+          "eslint-plugin-prettier@^3.4.0",
+          "eslint-config-prettier@^8.3.0",
+          "eslint-plugin-node@^11.1.0",
+          "eslint-config-node@^4.1.0",
+        ];
+
+        const result = await execa("npm", ["i", "-D", ...dependencies], {
+          cwd: options.targetDirectory,
+        });
+        if (result.failed) {
+          return Promise.reject(new Error("Failed to install dependencies"));
+        }
+        return;
+      },
+    },
+    {
+      title: "Install eslint config (JS)",
+      task: async () => {
+        const result = await execa(
+          "npx",
+          ["install-peerdeps", "--dev", "eslint-config-airbnb-base@^14.2.1"],
+          {
+            cwd: options.targetDirectory,
+          }
+        );
+        if (result.failed) {
+          return Promise.reject(new Error("Failed to install eslint config"));
+        }
+        return;
+      },
+    },
+    /* {
+      title: "Initialize git",
+      task: () => initializeGit(options),
+      enabled: () => options.git,
+    }, */
+  ]);
 }
 
 async function initializeGit(options) {
@@ -90,40 +199,6 @@ async function initializeGit(options) {
     return Promise.reject(new Error("Failed to initialize git repo"));
   }
   return;
-}
-
-async function installEslintConfigJs(options) {
-  const result = await execa(
-    "npx",
-    ["install-peerdeps", "--dev", "eslint-config-airbnb-base"],
-    {
-      cwd: options.targetDirectory,
-    }
-  );
-  if (result.failed) {
-    return Promise.reject(new Error("Failed to install eslint config"));
-  }
-  return;
-}
-async function installEslintConfigReact(options) {
-  const result = await execa(
-    "npx",
-    ["install-peerdeps", "--dev", "eslint-config-airbnb"],
-    {
-      cwd: options.targetDirectory,
-    }
-  );
-  if (result.failed) {
-    return Promise.reject(new Error("Failed to install eslint config"));
-  }
-  return;
-}
-
-function buildDynamicFiles(options) {
-  //TODO Add support for different data config depending on options.template
-  buildPackageJson(options);
-  buildEslintRcJson(options);
-  buildPrettierRcJson(options);
 }
 
 function buildPackageJson(options) {
