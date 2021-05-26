@@ -1,3 +1,6 @@
+import fs from "fs";
+import path from "path";
+
 export default function (options) {
   return {
     title: "Configure user settings",
