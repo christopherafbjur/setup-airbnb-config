@@ -13,6 +13,13 @@ const copy = promisify(ncp);
 async function copyTemplateFiles(options) {
   return copy(options.templateDirectory, options.targetDirectory, {
     clobber: false,
+    filter: (path) => {
+      const regex = /.*(.prettierrc.json|.eslintrc.json|package.json)$/i;
+      const skip = regex.test(path);
+
+      if (skip) return false;
+      return true;
+    },
   });
 }
 
@@ -120,57 +127,40 @@ function buildDynamicFiles(options) {
 }
 
 function buildPackageJson(options) {
-  const fullPath = path.resolve(options.targetDirectory, "package.json");
-  const data = {
-    name: "create-project-javascript-template",
-    version: "1.0.0",
-    description: "",
-    main: "index.js",
-    scripts: {
-      test: 'echo "Error: no test specified" && exit 1',
-    },
-    keywords: [],
-    author: "Christopher Af Bjur",
-    license: "ISC",
-    devDependencies: {
-      eslint: "^7.27.0",
-      "eslint-config-node": "^4.1.0",
-      "eslint-config-prettier": "^8.3.0",
-      "eslint-plugin-node": "^11.1.0",
-      "eslint-plugin-prettier": "^3.4.0",
-      prettier: "^2.3.0",
-    },
-  };
+  const inputPath = path.resolve(options.templateDirectory, "package.json");
+  const outputPath = path.resolve(options.targetDirectory, "package.json");
+  const data = readDataFile(inputPath);
 
-  saveDataFile(fullPath, data);
+  data.name = options.projectName;
+  data.author = options.author;
+
+  saveDataFile(outputPath, data);
 }
 
 function buildEslintRcJson(options) {
-  const fullPath = path.resolve(options.targetDirectory, ".eslintrc.json");
-  const data = {
-    extends: ["airbnb-base", "prettier", "plugin:node/recommended"],
-    plugins: ["prettier"],
-    rules: {
-      "prettier/prettier": "error",
-      "no-unused-vars": "warn",
-      "no-console": "off",
-      "func-names": "off",
-      "no-process-exit": "off",
-      "object-shorthand": "off",
-      "class-methods-use-this": "off",
-    },
-  };
+  const inputPath = path.resolve(options.templateDirectory, ".eslintrc.json");
+  const outputPath = path.resolve(options.targetDirectory, ".eslintrc.json");
+  const data = readDataFile(inputPath);
 
-  saveDataFile(fullPath, data);
+  //Mutate user options here
+
+  saveDataFile(outputPath, data);
 }
 
 function buildPrettierRcJson(options) {
-  const fullPath = path.resolve(options.targetDirectory, ".prettierrc.json");
-  const data = {};
+  const inputPath = path.resolve(options.templateDirectory, ".prettierrc.json");
+  const outputPath = path.resolve(options.targetDirectory, ".prettierrc.json");
+  const data = readDataFile(inputPath);
 
-  saveDataFile(fullPath, data);
+  //Mutate user options here
+
+  saveDataFile(outputPath, data);
 }
 
 function saveDataFile(filePath, data) {
   fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+}
+
+function readDataFile(filePath) {
+  return JSON.parse(fs.readFileSync(filePath));
 }

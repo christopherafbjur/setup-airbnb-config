@@ -18,6 +18,8 @@ function parseArgsIntoOptions(rawArgs) {
     skipPrompts: args["--yes"] || false,
     git: args["--git"] || false,
     template: args._[0],
+    projectName: "Test Project", //TODO Add to flags
+    author: "Test Author <test@test.com>", //TODO Add to flags
   };
 }
 
