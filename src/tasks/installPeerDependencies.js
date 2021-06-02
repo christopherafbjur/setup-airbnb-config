@@ -1,4 +1,5 @@
 import execa from "execa";
+import { getPackageManager } from "../helpers";
 
 function getTemplatePeerDeps(template) {
   const dependencies = ["eslint@^7.2.0", "eslint-plugin-import@^2.22.1"];
@@ -20,14 +21,15 @@ function getTemplatePeerDeps(template) {
   return dependencies;
 }
 export default function (options) {
+  const manager = getPackageManager(options);
   const template = options.template.toLowerCase();
 
   return {
     title: `Installing peer dependencies...`,
     task: async () => {
       const result = await execa(
-        "npm",
-        ["i", "-D", ...getTemplatePeerDeps(template)],
+        manager.name,
+        [...manager.commands, ...getTemplatePeerDeps(template)],
         {
           cwd: options.targetDirectory,
         }

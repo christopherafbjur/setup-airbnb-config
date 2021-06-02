@@ -1,6 +1,8 @@
 import execa from "execa";
+import { getPackageManager } from "../helpers";
 
 export default function (options) {
+  const manager = getPackageManager(options);
   const template = options.template.toLowerCase();
   const dependencies = [
     "prettier@^2.3.0",
@@ -16,9 +18,13 @@ export default function (options) {
   return {
     title: "Installing dependencies...",
     task: async () => {
-      const result = await execa("npm", ["i", "-D", ...dependencies], {
-        cwd: options.targetDirectory,
-      });
+      const result = await execa(
+        manager.name,
+        [...manager.commands, ...dependencies],
+        {
+          cwd: options.targetDirectory,
+        }
+      );
       if (result.failed) {
         return Promise.reject(new Error("Failed to install dependencies"));
       }
