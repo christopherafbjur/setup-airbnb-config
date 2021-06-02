@@ -1,34 +1,56 @@
 import arg from "arg";
+import chalk from "chalk";
 import inquirer from "inquirer";
 import { createProject } from "./main";
+import { detectPackageManager } from "./helpers";
 
 function parseArgsIntoOptions(rawArgs) {
-  const args = arg(
-    {
-      "--yes": Boolean,
-      "--git": Boolean,
-      "--yarn": Boolean,
-      "-y": "--yes",
-    },
-    {
-      argv: rawArgs.slice(2),
-    }
-  );
+  let args;
+  try {
+    args = arg(
+      {
+        "--yarn": Boolean,
+        "--npm": Boolean,
+        "--react": Boolean,
+        "--javascript": Boolean,
+        "--js": "--javascript",
+      },
+      {
+        argv: rawArgs.slice(2),
+      }
+    );
+    console.log("args", args);
+  } catch (err) {
+    console.error("%s ".concat(err.message), chalk.red.bold("ERROR "));
+    process.exit(1);
+  }
+
   return {
-    useYarn: args["--yarn"] || false,
-    skipPrompts: args["--yes"] || false,
-    template: args._[0],
+    template: (function () {
+      if (args["--react"]) return "react";
+      if (args["--javascript"]) return "javascript";
+
+      return null;
+    })(),
+    manager: (function () {
+      if (args["--npm"]) return "npm";
+      if (args["--yarn"]) return "yarn";
+
+      return null;
+    })(),
+  };
+}
+
+function setTargetDirectory(options) {
+  return {
+    ...options,
+    targetDirectory: options.targetDirectory || process.cwd(),
   };
 }
 
 async function promptForMissingOptions(options) {
-  const defaultTemplate = "JavaScript";
-  if (options.skipPrompts) {
-    return {
-      ...options,
-      template: options.template || defaultTemplate,
-    };
-  }
+  const defaultTemplate = "javascript";
+  const defaultManager = "npm";
 
   const questions = [];
   if (!options.template) {
@@ -36,8 +58,27 @@ async function promptForMissingOptions(options) {
       type: "list",
       name: "template",
       message: "Please choose what type of project this is",
-      choices: ["JavaScript", "React"],
+      choices: [
+        { name: "JavaScript", value: "javascript" },
+        { name: "React", value: "react" },
+      ],
       default: defaultTemplate,
+    });
+  }
+
+  if (!options.manager) {
+    detectPackageManager(options, ({ detected, error }) => {
+      if (detected) {
+        options.manager = detected;
+      } else {
+        questions.push({
+          type: "list",
+          name: "manager",
+          choices: ["npm", "yarn"],
+          message: error,
+          default: defaultManager,
+        });
+      }
     });
   }
 
@@ -45,12 +86,13 @@ async function promptForMissingOptions(options) {
   return {
     ...options,
     template: options.template || answers.template,
-    test: options.test || answers.test,
+    manager: options.manager || answers.manager,
   };
 }
 
 export async function cli(args) {
   let options = parseArgsIntoOptions(args);
+  options = setTargetDirectory(options);
   options = await promptForMissingOptions(options);
 
   await createProject(options);
