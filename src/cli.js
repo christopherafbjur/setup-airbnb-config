@@ -7,14 +7,15 @@ function parseArgsIntoOptions(rawArgs) {
     {
       "--yes": Boolean,
       "--git": Boolean,
+      "--yarn": Boolean,
       "-y": "--yes",
-      "-g": "--git",
     },
     {
       argv: rawArgs.slice(2),
     }
   );
   return {
+    useYarn: args["--yarn"] || false,
     skipPrompts: args["--yes"] || false,
     template: args._[0],
   };
@@ -34,7 +35,7 @@ async function promptForMissingOptions(options) {
     questions.push({
       type: "list",
       name: "template",
-      message: "Please choose which project template to use",
+      message: "Please choose what type of project this is",
       choices: ["JavaScript", "React"],
       default: defaultTemplate,
     });
