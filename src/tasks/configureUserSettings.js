@@ -1,5 +1,5 @@
-import fs from "fs";
 import path from "path";
+import { readDataFile, saveDataFile } from "../helpers";
 
 export default function (options) {
   return {
@@ -29,12 +29,4 @@ function buildPrettierRcJson(options) {
   //Mutate user options here
 
   saveDataFile(outputPath, data);
-}
-
-function saveDataFile(filePath, data) {
-  fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
-}
-
-function readDataFile(filePath) {
-  return JSON.parse(fs.readFileSync(filePath));
 }
