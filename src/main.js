@@ -7,11 +7,6 @@ import { getTasks } from "./tasks";
 const access = promisify(fs.access);
 
 export async function createProject(options) {
-  options = {
-    ...options,
-    targetDirectory: options.targetDirectory || process.cwd(),
-  };
-
   const currentFileUrl = import.meta.url;
   const templateDir = path.resolve(
     new URL(currentFileUrl).pathname,
