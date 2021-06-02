@@ -3,7 +3,6 @@ import execa from "execa";
 export default function (options) {
   const template = options.template.toLowerCase();
   const dependencies = [
-    "eslint@^7.27.0",
     "prettier@^2.3.0",
     "eslint-plugin-prettier@^3.4.0",
     "eslint-config-prettier@^8.3.0",
@@ -15,7 +14,7 @@ export default function (options) {
   }
 
   return {
-    title: "Install eslint/prettier deps",
+    title: "Installing dependencies...",
     task: async () => {
       const result = await execa("npm", ["i", "-D", ...dependencies], {
         cwd: options.targetDirectory,
