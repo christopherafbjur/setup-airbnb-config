@@ -3,8 +3,9 @@ import chalk from "chalk";
 import inquirer from "inquirer";
 import { createProject } from "./main";
 import { detectPackageManager } from "./helpers";
+import { packageJsonExists } from "./helpers";
 
-function parseArgsIntoOptions(rawArgs) {
+function parseArgsIntoOptions(rawArgs, options) {
   let args;
   try {
     args = arg(
@@ -26,6 +27,7 @@ function parseArgsIntoOptions(rawArgs) {
   }
 
   return {
+    ...options,
     template: (function () {
       if (args["--react"]) return "react";
       if (args["--javascript"]) return "javascript";
@@ -41,10 +43,9 @@ function parseArgsIntoOptions(rawArgs) {
   };
 }
 
-function setTargetDirectory(options) {
+function createOptions() {
   return {
-    ...options,
-    targetDirectory: options.targetDirectory || process.cwd(),
+    targetDirectory: process.cwd(),
   };
 }
 
@@ -91,8 +92,14 @@ async function promptForMissingOptions(options) {
 }
 
 export async function cli(args) {
-  let options = parseArgsIntoOptions(args);
-  options = setTargetDirectory(options);
+  let options = createOptions();
+
+  if (!packageJsonExists(options)) {
+    console.error("%s missing package.json.", chalk.red.bold("ERROR "));
+    process.exit(1);
+  }
+
+  options = parseArgsIntoOptions(args, options);
   options = await promptForMissingOptions(options);
 
   await createProject(options);

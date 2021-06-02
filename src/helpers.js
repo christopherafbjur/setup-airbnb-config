@@ -46,6 +46,10 @@ export function detectPackageManager(options, callback) {
   });
 }
 
+export function packageJsonExists(options) {
+  return fileExists(path.resolve(options.targetDirectory, "package.json"));
+}
+
 function fileExists(filePath) {
   try {
     if (fs.existsSync(filePath)) return true;
