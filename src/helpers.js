@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import chalk from "chalk";
 
 export function getPackageManager(options) {
   console.log("selected manager is", options.manager);
@@ -50,11 +51,15 @@ export function packageJsonExists(options) {
   return fileExists(path.resolve(options.targetDirectory, "package.json"));
 }
 
-function fileExists(filePath) {
+export function fileExists(filePath) {
   try {
     if (fs.existsSync(filePath)) return true;
     return false;
   } catch (err) {
-    return false;
+    console.error(
+      `%s Unable to resolve "${filePath}"`,
+      chalk.red.bold("ERROR ")
+    );
+    process.exit(1);
   }
 }
