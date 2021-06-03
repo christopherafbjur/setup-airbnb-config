@@ -22,6 +22,14 @@
     "prepack": "npm run build",
     "test": "echo \"No test specified\""
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/christopherafbjur/setup-airbnb-config.git"
+  },
+  "bugs": {
+    "url": "https://github.com/christopherafbjur/setup-airbnb-config/issues"
+  },
+  "homepage": "https://github.com/christopherafbjur/setup-airbnb-config#readme",
   "keywords": [
     "cli",
     "setup-airbnb-config",
