@@ -14,7 +14,8 @@ function parseArgsIntoOptions(rawArgs, options) {
         "--npm": Boolean,
         "--react": Boolean,
         "--javascript": Boolean,
-        "--js": "--javascript",
+        "-j": "--javascript",
+        "-r": "--react",
       },
       {
         argv: rawArgs.slice(2),
