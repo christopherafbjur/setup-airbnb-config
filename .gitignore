@@ -1,4 +1,4 @@
 node_modules
 templates/*/package-lock.json
-test
 build
+.DS_Store
