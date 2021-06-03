@@ -30,7 +30,8 @@
     "execa": "^5.0.0",
     "inquirer": "^8.1.0",
     "listr": "^0.14.3",
-    "ncp": "^2.0.0"
+    "ncp": "^2.0.0",
+    "path-parse": "^1.0.7"
   },
   "devDependencies": {
     "rollup": "^2.50.6",
