@@ -19,6 +19,7 @@
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
+    "prepublishOnly": "npm run build",
     "test": "echo \"No test specified\""
   },
   "keywords": [
