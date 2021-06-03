@@ -1,6 +1,6 @@
 {
   "name": "setup-airbnb-config",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Bootstraps your VSCode project with Airbnb's eslint configuration together with Prettier through a CLI.",
   "main": "build/main.js",
   "files": [
