@@ -15,16 +15,6 @@ This CLI will will try to automatically detect wether you're using `yarn` or `np
 
 3. Select the desired project type (Javascript or React).
 
-## FAQ
-
-#### I'm seeing an error "Missing package.json"
-
-Your project needs at least a package.json at the same level as `npx setup-airbnb-config` is run in order to install the required dependencies.
-
-#### What package manager is used for installing required dependencies?
-
-The CLI will try to automatically detect which package manager you're using. If it cannot be determined, the CLI will ask you which package manager you want to use.
-
 ## Usage
 
 ```bash
@@ -59,6 +49,16 @@ npx setup-airbnb-config ~/myProject
 ```
 
 Runs the CLI and asks you the required questions such as project type and preferred package manager if automatic detection fails.
+
+## FAQ
+
+#### I'm seeing an error "Missing package.json"
+
+Your project needs at least a package.json at the same level as `npx setup-airbnb-config` is run in order to install the required dependencies.
+
+#### What package manager is used for installing required dependencies?
+
+The CLI will try to automatically detect which package manager you're using. If it cannot be determined, the CLI will ask you which package manager you want to use.
 
 ## Contributing
 
