@@ -1,23 +1,23 @@
-import { terser } from "rollup-plugin-terser";
+import { terser } from 'rollup-plugin-terser';
 
 export default [
   {
-    input: "./src/main.js",
+    input: './src/main.js',
     output: {
-      file: "./build/bundle.min.js",
-      format: "es",
-      name: "mainBundle",
+      file: './build/bundle.min.js',
+      format: 'es',
+      name: 'mainBundle',
     },
     plugins: [
       /* terser() */
     ],
   },
   {
-    input: "./src/cli.js",
+    input: './src/cli.js',
     output: {
-      file: "./build/cli.min.js",
-      format: "es",
-      name: "cliBundle",
+      file: './build/cli.min.js',
+      format: 'es',
+      name: 'cliBundle',
     },
     plugins: [
       /* terser() */
