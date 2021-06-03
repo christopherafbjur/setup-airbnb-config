@@ -1,11 +1,11 @@
 {
-  "name": "@christopherafbjur/create-project",
+  "name": "setup-airbnb-config",
   "version": "1.0.0",
   "description": "A CLI to bootstrap projects with Prettier and Eslint.",
   "main": "src/index.js",
   "bin": {
-    "@christopherafbjur/create-project": "bin/create-project",
-    "create-project": "bin/create-project"
+    "@christopherafbjur/setup-airbnb-config": "bin/setup-airbnb-config",
+    "setup-airbnb-config": "bin/setup-airbnb-config"
   },
   "publishConfig": {
     "access": "public"
@@ -15,9 +15,10 @@
   },
   "keywords": [
     "cli",
-    "create-project",
+    "setup-airbnb-config",
     "prettier",
-    "eslint"
+    "eslint",
+    "airbnb"
   ],
   "author": "Christopher Af Bjur",
   "license": "MIT",
