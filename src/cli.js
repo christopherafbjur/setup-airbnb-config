@@ -54,18 +54,6 @@ async function promptForMissingOptions(options) {
   const defaultManager = "npm";
 
   const questions = [];
-  if (!options.template) {
-    questions.push({
-      type: "list",
-      name: "template",
-      message: "Please choose what type of project this is",
-      choices: [
-        { name: "JavaScript", value: "javascript" },
-        { name: "React", value: "react" },
-      ],
-      default: defaultTemplate,
-    });
-  }
 
   if (!options.manager) {
     detectPackageManager(options, ({ detected, error }) => {
@@ -83,6 +71,19 @@ async function promptForMissingOptions(options) {
     });
   }
 
+  if (!options.template) {
+    questions.push({
+      type: "list",
+      name: "template",
+      message: "Please choose what type of project this is",
+      choices: [
+        { name: "JavaScript", value: "javascript" },
+        { name: "React", value: "react" },
+      ],
+      default: defaultTemplate,
+    });
+  }
+
   const answers = await inquirer.prompt(questions);
   return {
     ...options,
@@ -95,7 +96,7 @@ export async function cli(args) {
   let options = createOptions();
 
   if (!packageJsonExists(options)) {
-    console.error("%s missing package.json.", chalk.red.bold("ERROR "));
+    console.error("%s Missing package.json.", chalk.red.bold("ERROR "));
     process.exit(1);
   }
 
