@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import { fileExists, readDataFile, saveDataFile } from "../helpers";
+import { fileExists, readDataFile, saveDataFile } from "../utils/helpers";
 
 export default function addFormatOnSave(options) {
   return {

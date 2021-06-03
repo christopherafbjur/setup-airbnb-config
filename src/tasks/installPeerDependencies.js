@@ -1,5 +1,5 @@
 import execa from "execa";
-import { getPackageManager } from "../helpers";
+import { getPackageManager } from "../utils/helpers";
 
 function getTemplatePeerDeps({ template }) {
   const dependencies = ["eslint@^7.2.0", "eslint-plugin-import@^2.22.1"];

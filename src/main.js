@@ -2,7 +2,7 @@ import chalk from "chalk";
 import fs from "fs";
 import path from "path";
 import { promisify } from "util";
-import { getTasks } from "./tasks";
+import { getTasks } from "./tasks/index";
 
 const access = promisify(fs.access);
 

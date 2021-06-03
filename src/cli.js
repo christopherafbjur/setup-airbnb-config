@@ -2,8 +2,8 @@ import arg from "arg";
 import chalk from "chalk";
 import inquirer from "inquirer";
 import { createProject } from "./main";
-import { detectPackageManager } from "./helpers";
-import { packageJsonExists } from "./helpers";
+import { detectPackageManager } from "./utils/helpers";
+import { packageJsonExists } from "./utils/helpers";
 
 function parseArgsIntoOptions(rawArgs, options) {
   let args;

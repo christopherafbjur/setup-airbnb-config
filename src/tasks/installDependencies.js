@@ -1,5 +1,5 @@
 import execa from "execa";
-import { getPackageManager } from "../helpers";
+import { getPackageManager } from "../utils/helpers";
 
 export default function (options) {
   const manager = getPackageManager(options);
