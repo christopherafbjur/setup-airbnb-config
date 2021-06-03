@@ -1,8 +1,11 @@
+import path from 'path';
+import fs from 'path';
 import arg from 'arg';
 import chalk from 'chalk';
 import inquirer from 'inquirer';
+import pathParse from 'path-parse';
 import { createProject } from './main';
-import { detectPackageManager } from './utils/helpers';
+import { detectPackageManager, fileExists } from './utils/helpers';
 import { packageJsonExists } from './utils/helpers';
 
 function parseArgsIntoOptions(rawArgs, options) {
@@ -29,8 +32,8 @@ function parseArgsIntoOptions(rawArgs, options) {
   }
 
   return {
-    ...options,
-    displayHelp: args['--help'] || false,
+    displayHelp: args['--help'] || !args['_'][0],
+    path: args['_'][0] || '',
     template: (function () {
       if (args['--react']) return 'react';
       if (args['--javascript']) return 'javascript';
@@ -46,11 +49,44 @@ function parseArgsIntoOptions(rawArgs, options) {
   };
 }
 
-function createOptions() {
-  console.log(process.cwd());
+function parseTargetDirectory(options) {
+  const { root, dir, base } = pathParse(options.path);
+  const targetPath = path.resolve(root, dir, base);
+
+  if (!fileExists(targetPath)) {
+    console.error(
+      `%s The specified project path "${targetPath}" does not exist`,
+      chalk.red.bold('ERROR ')
+    );
+    process.exit(1);
+  }
+
   return {
-    targetDirectory: process.cwd(),
+    ...options,
+    targetDirectory: targetPath,
   };
+}
+
+function handleHelp(options) {
+  if (!options.displayHelp) return true;
+
+  const help = `
+      Usage
+        $ setup-airbnb-config <path>
+
+      Options
+        -j, --javascript    Generates a JS configuration
+        -r, --react         Generates a React configuration
+        --yarn              Enforce npm to be used when installing dependencies
+        --npm               Enforce yarn to be used when installing dependencies
+
+      Examples
+        $ setup-airbnb-config ./myProject --r --yarn
+        $ setup-airbnb-config . --javascript --npm
+        $ setup-airbnb-config ~/myProject
+`;
+  console.log(help);
+  process.exit(1);
 }
 
 async function promptForMissingOptions(options) {
@@ -97,26 +133,11 @@ async function promptForMissingOptions(options) {
 }
 
 export async function cli(args) {
-  let options = createOptions();
+  let options = parseArgsIntoOptions(args);
 
-  options = parseArgsIntoOptions(args, options);
+  handleHelp(options);
 
-  if (options.displayHelp) {
-    const help = `
-      Options
-        -j, --javascript    Generates a JS configuration
-        -r, --react         Generates a React configuration
-        --yarn              Enforce npm to be used when installing dependencies
-        --npm               Enforce yarn to be used when installing dependencies
-
-      Examples
-        $ setup-airbnb-config --r --yarn
-        $ setup-airbnb-config --javascript --npm
-        $ setup-airbnb-config
-`;
-    console.log(help);
-    process.exit(1);
-  }
+  options = parseTargetDirectory(options);
 
   if (!packageJsonExists(options)) {
     console.error('%s Missing package.json.', chalk.red.bold('ERROR '));
