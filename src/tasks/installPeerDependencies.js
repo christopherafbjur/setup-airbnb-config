@@ -1,7 +1,7 @@
 import execa from "execa";
 import { getPackageManager } from "../helpers";
 
-function getTemplatePeerDeps(template) {
+function getTemplatePeerDeps({ template }) {
   const dependencies = ["eslint@^7.2.0", "eslint-plugin-import@^2.22.1"];
   const reactDeps = [
     "eslint-config-airbnb@^18.2.1",
@@ -22,14 +22,13 @@ function getTemplatePeerDeps(template) {
 }
 export default function (options) {
   const manager = getPackageManager(options);
-  const template = options.template.toLowerCase();
 
   return {
     title: `Installing peer dependencies...`,
     task: async () => {
       const result = await execa(
         manager.name,
-        [...manager.commands, ...getTemplatePeerDeps(template)],
+        [...manager.commands, ...getTemplatePeerDeps(options)],
         {
           cwd: options.targetDirectory,
         }

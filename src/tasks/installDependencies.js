@@ -3,7 +3,6 @@ import { getPackageManager } from "../helpers";
 
 export default function (options) {
   const manager = getPackageManager(options);
-  const template = options.template.toLowerCase();
   const dependencies = [
     "prettier@^2.3.0",
     "eslint-plugin-prettier@^3.4.0",
@@ -11,7 +10,7 @@ export default function (options) {
   ];
   const jsDeps = ["eslint-plugin-node@^11.1.0", "eslint-config-node@^4.1.0"];
 
-  if (template === "javascript") {
+  if (options.template === "javascript") {
     jsDeps.forEach((jsDep) => dependencies.push(jsDep));
   }
 
