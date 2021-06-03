@@ -4,9 +4,9 @@
   "description": "Bootstraps your VSCode project with Airbnb's eslint configuration together with Prettier through a CLI.",
   "main": "build/main.js",
   "files": [
-    "/bin",
-    "/build",
-    "/templates",
+    "bin",
+    "build",
+    "templates",
     "rollup.config.js"
   ],
   "bin": {
