@@ -21,7 +21,6 @@ function parseArgsIntoOptions(rawArgs, options) {
         argv: rawArgs.slice(2),
       }
     );
-    console.log("args", args);
   } catch (err) {
     console.error("%s ".concat(err.message), chalk.red.bold("ERROR "));
     process.exit(1);

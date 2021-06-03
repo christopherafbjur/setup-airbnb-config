@@ -3,7 +3,6 @@ import path from "path";
 import chalk from "chalk";
 
 export function getPackageManager(options) {
-  console.log("selected manager is", options.manager);
   const managers = {
     yarn: {
       name: "yarn",
