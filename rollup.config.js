@@ -4,13 +4,11 @@ export default [
   {
     input: './src/main.js',
     output: {
-      file: './build/bundle.min.js',
+      file: './build/main.min.js',
       format: 'es',
       name: 'mainBundle',
     },
-    plugins: [
-      /* terser() */
-    ],
+    plugins: [terser()],
   },
   {
     input: './src/cli.js',
@@ -19,8 +17,6 @@ export default [
       format: 'es',
       name: 'cliBundle',
     },
-    plugins: [
-      /* terser() */
-    ],
+    plugins: [terser()],
   },
 ];

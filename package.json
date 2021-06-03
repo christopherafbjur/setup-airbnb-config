@@ -2,7 +2,13 @@
   "name": "setup-airbnb-config",
   "version": "1.0.0",
   "description": "Bootstraps your VSCode project with Airbnb's eslint configuration together with Prettier through a CLI.",
-  "main": "src/main.js",
+  "main": "build/main.js",
+  "files": [
+      "/bin",
+      "/build",
+      "/templates",
+      "rollup.config.js"
+  ],
   "bin": {
     "@christopherafbjur/setup-airbnb-config": "bin/setup-airbnb-config",
     "setup-airbnb-config": "bin/setup-airbnb-config"
@@ -12,7 +18,8 @@
   },
   "scripts": {
     "build": "rollup -c",
-    "dev": "rollup -c -w"
+    "dev": "rollup -c -w",
+    "test": "echo \"No test specified\""
   },
   "keywords": [
     "cli",
