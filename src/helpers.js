@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 
 export function getPackageManager(options) {
+  console.log("selected manager is", options.manager);
   const managers = {
     yarn: {
       name: "yarn",
@@ -33,7 +34,7 @@ export function detectPackageManager(options, callback) {
     return callback({
       detected: null,
       error:
-        "Multiple package managers detected for project. Which package manager be used for installing dependencies to this project?",
+        "Multiple package managers detected. Which one do you want to use?",
     });
 
   if (yarn) return callback({ detected: "yarn", error: null });
@@ -41,8 +42,7 @@ export function detectPackageManager(options, callback) {
 
   return callback({
     detected: null,
-    error:
-      "Unable to detect package manager to for project. Which package manager be used for installing dependencies to this project?",
+    error: "Which package manager do you want to use?",
   });
 }
 
