@@ -7,10 +7,10 @@ This CLI will will try to automatically detect wether you're using `yarn` or `np
 ## Installation
 
 1. Install [Eslint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) and [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) extensions in VSCode.
-2. In your the root folder of the project where you want to apply the style guide configuration run:
+2. Now simply run the CLI followed by the project path to bootstrap:
 
 ```bash
-  npx setup-airbnb-config
+  npx setup-airbnb-config .
 ```
 
 3. Select the desired project type (Javascript or React).
@@ -25,7 +25,13 @@ Your project needs at least a package.json at the same level as `npx setup-airbn
 
 The CLI will try to automatically detect which package manager you're using. If it cannot be determined, the CLI will ask you which package manager you want to use.
 
-## Available flags
+## Usage
+
+```bash
+npx setup-airbnb-config <path> [--options]
+```
+
+### Options
 
 | Flag               | Description                                           |
 | :----------------- | :---------------------------------------------------- |
@@ -37,19 +43,19 @@ The CLI will try to automatically detect which package manager you're using. If 
 ### Examples
 
 ```bash
-npx setup-airbnb-config --r --yarn
+npx setup-airbnb-config ./myProject --r --yarn
 ```
 
 Creates a react configuration and enforce yarn to be used when installing dependencies.
 
 ```bash
-npx setup-airbnb-config --javascript --npm
+npx setup-airbnb-config . --javascript --npm
 ```
 
 Creates a vanilla JS configuration and enforce npm to be used when installing dependencies.
 
 ```
-npx setup-airbnb-config
+npx setup-airbnb-config ~/myProject
 ```
 
 Runs the CLI and asks you the required questions such as project type and preferred package manager if automatic detection fails.
