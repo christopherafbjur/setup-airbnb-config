@@ -4,8 +4,8 @@ import { getPackageManager } from "../utils/helpers";
 export default function (options) {
   const manager = getPackageManager(options);
   const dependencies = [
-    "prettier@^2.3.0",
-    "eslint-plugin-prettier@^3.4.0",
+    "prettier@^2.5.1",
+    "eslint-plugin-prettier@^4.0.0",
     "eslint-config-prettier@^8.3.0",
   ];
   const jsDeps = ["eslint-plugin-node@^11.1.0", "eslint-config-node@^4.1.0"];
