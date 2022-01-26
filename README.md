@@ -33,7 +33,7 @@ npx setup-airbnb-config <path> [--options]
 ### Examples
 
 ```bash
-npx setup-airbnb-config ./myProject --r --yarn
+npx setup-airbnb-config ./myProject -r --yarn
 ```
 
 Creates a react configuration and enforce yarn to be used when installing dependencies.
