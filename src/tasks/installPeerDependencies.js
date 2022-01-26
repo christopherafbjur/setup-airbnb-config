@@ -2,14 +2,14 @@ import execa from "execa";
 import { getPackageManager } from "../utils/helpers";
 
 function getTemplatePeerDeps({ template }) {
-  const dependencies = ["eslint@^7.2.0", "eslint-plugin-import@^2.22.1"];
+  const dependencies = ["eslint@^8.7.0", "eslint-plugin-import@^2.25.4"];
   const reactDeps = [
-    "eslint-config-airbnb@^18.2.1",
-    "eslint-plugin-jsx-a11y@^6.4.1",
-    "eslint-plugin-react@^7.21.5",
-    "eslint-plugin-react-hooks@^4",
+    "eslint-config-airbnb@^19.0.4",
+    "eslint-plugin-jsx-a11y@^6.5.1",
+    "eslint-plugin-react@^7.28.0",
+    "eslint-plugin-react-hooks@^4.3.0",
   ];
-  const jsDeps = ["eslint-config-airbnb-base@^14.2.1"];
+  const jsDeps = ["eslint-config-airbnb-base@^15.0.0"];
 
   if (template === "react") {
     reactDeps.forEach((reactDep) => dependencies.push(reactDep));
